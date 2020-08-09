@@ -8,7 +8,7 @@ data = keras.datasets.fashion_mnist
 
 (train_images, train_labels), (test_images, test_labels) = data.load_data()
 
-class_names = ['T-shirt/top', 'Trouser', 'Pullover', 'Dress', 'Coat',
+classNames = ['T-shirt/top', 'Trouser', 'Pullover', 'Dress', 'Coat',
                'Sandal', 'Shirt', 'Sneaker', 'Bag', 'Ankle boot']
 
 #shrink pixel image value to manageable numbers
@@ -32,8 +32,21 @@ model.compile(optimizer='adam', loss='sparse_categorical_crossentropy', metrics=
 
 #train model. Epochs work like if the neural network receives a certain subset of images in a certain, it will tweak its parameters accordingly (ex. see 10 images shirt first, etc.)
 # higher epoch != more accuracy, epoch number is arbitrary
-model.fit(train_images, train_labels, epochs=10) #epoch = how many times the model is going to see the info (train iimages, and train labels)
+model.fit(train_images, train_labels, epochs=5) #epoch = how many times the model is going to see the info (train iimages, and train labels)
 
+"""
 #evaluate model to test data
 test_loss, test_acc = model.evaluate(test_images, test_labels)
-print('Test Accuracy: ', test_acc) #after last epoch, it shows accuracy on test data
+print('Test Accuracy: ', test_acc) #after last epoch, it shows accuracy on test data"""
+
+#using the model
+prediction = model.predict(test_images)
+#print(prediction[0]) #this shows 10 values in an array, which are the 10 "neurons" in the output layer, the highest value is its "correct" guess
+#print(classNames[np.argmax(prediction[0])]) #np.argmax = gets the largest value in a list and finds it index
+
+for i in range(5):
+    plt.grid(False)
+    plt.imshow(test_images[i], cmap=plt.cm.binary)
+    plt.xlabel(f"Actual: {classNames[test_labels[i]]}")
+    plt.title(f"Prediction: {classNames[np.argmax(prediction[i])]} ")
+    plt.show()
